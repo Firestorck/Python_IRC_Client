@@ -4,7 +4,10 @@ import shared_data, colorama
 def listener(irc, botnick):
     ConsecutiveErrorCount = 0
     print("Listener thread loaded")
+    #text = ""
+    colorama.init()
     while 1:                        #puts it in a loop
+    #    prevText = text
         text = irc.recv(2040).decode("utf-8", "replace")     #receive the text
         
         if text.find('PRIVMSG ') != -1:
@@ -31,13 +34,18 @@ def listener(irc, botnick):
             channel = text.replace("\n", "").split("PART ")[1]
             print(colorama.Fore.YELLOW, strftime("%Y-%m-%d %H:%M:%S", gmtime()), colorama.Fore.BLUE , f"{channel}{colorama.Fore.RED} - {user}{colorama.Style.RESET_ALL}")
         
+#        elif text.find("End of /NAMES list.") != -1:
+#            Names = prevText.split(":", 2)[2].split(" ")
+#            for i in Names:
+#                print(colorama.Fore.YELLOW, strftime("%Y-%m-%d %H:%M:%S", gmtime()), colorama.Fore.BLUE , f"People in the channel : {colorama.Fore.GREEN}{i}{colorama.Style.RESET_ALL}")
+#
         elif text.find(':') == -1:      #disconnection handling
             ConsecutiveErrorCount = ConsecutiveErrorCount +1
             if ConsecutiveErrorCount >= 20:
                 print("Too many errors. Please restart the programm\r\n")
                 shared_data.ListenerRunning = 0
                 exit()
-        
+
         else:
             ConsecutiveErrorCount = 0
-            print(colorama.Fore.YELLOW, strftime("%Y-%m-%d %H:%M:%S", gmtime()), text)    #print text to console
+            print(colorama.Fore.YELLOW + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + text)   #print text to console

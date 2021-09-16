@@ -1,6 +1,5 @@
-import socket, colorama
+import socket
 
-colorama.init()
 server = "localhost"       #settings
 channel = "#domino"
 botnick = "firestorck_bot"
