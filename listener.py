@@ -3,7 +3,7 @@ import shared_data, colorama
 
 def listener(irc, botnick):
     ConsecutiveErrorCount = 0
-    print("Listener thread loaded")
+    print(colorama.Fore.BLUE, "Listener thread loaded", colorama.Style.RESET_ALL)
     #text = ""
     colorama.init()
     while 1:                        #puts it in a loop
@@ -12,12 +12,12 @@ def listener(irc, botnick):
         
         if text.find('PRIVMSG ') != -1:
             if text.find('PRIVMSG ' + shared_data.channel) != -1:
-                InMsg = text.replace("\n", "").split(":", 2)
+                InMsg = text.rsplit("\n", 1)[0].split(":", 2)
                 user = InMsg[1].split("!", 1)[0]
                 print(colorama.Fore.YELLOW, strftime("%Y-%m-%d %H:%M:%S", gmtime()), colorama.Fore.BLUE , f"{shared_data.channel} [{user}] : {colorama.Fore.MAGENTA}{InMsg[2]}{colorama.Style.RESET_ALL}")    #print text to console
         
             elif text.find('PRIVMSG ' + botnick) != -1:     #private message handling
-                InMsg = text.replace("\r\n", "").split(":", 4)
+                InMsg = text.rsplit("\n", 1)[0].split(":", 4)
                 shared_data.ConvUser = InMsg[1].rsplit("!", 1)[0]
                 print(colorama.Fore.YELLOW, strftime("%Y-%m-%d %H:%M:%S", gmtime()), colorama.Fore.BLUE , f"[{shared_data.ConvUser}] -> [Me] : {colorama.Fore.MAGENTA}{InMsg[2]}{colorama.Style.RESET_ALL}")    #print text to console
         
@@ -26,12 +26,12 @@ def listener(irc, botnick):
         
         elif text.find('JOIN ') != -1: 
             user = text.replace(":", "").split("!", 1)[0]
-            channel = text.replace("\n", "").split("JOIN ")[1]
+            channel = text.rsplit("\n", 1)[0].split("JOIN ")[1]
             print(colorama.Fore.YELLOW, strftime("%Y-%m-%d %H:%M:%S", gmtime()), colorama.Fore.BLUE , f"{channel}{colorama.Fore.GREEN} + {user}{colorama.Style.RESET_ALL}")
         
         elif text.find('PART ') != -1: 
             user = text.replace(":", "").split("!", 1)[0]
-            channel = text.replace("\n", "").split("PART ")[1]
+            channel = text.rsplit("\n", 1)[0].split("PART ")[1]
             print(colorama.Fore.YELLOW, strftime("%Y-%m-%d %H:%M:%S", gmtime()), colorama.Fore.BLUE , f"{channel}{colorama.Fore.RED} - {user}{colorama.Style.RESET_ALL}")
         
 #        elif text.find("End of /NAMES list.") != -1:
@@ -48,4 +48,4 @@ def listener(irc, botnick):
 
         else:
             ConsecutiveErrorCount = 0
-            print(colorama.Fore.YELLOW + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + text)   #print text to console
+            print(colorama.Fore.YELLOW + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + text.rsplit("\n", 1)[0])   #print text to console
