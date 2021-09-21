@@ -8,7 +8,7 @@ def listener(irc, botnick):
     colorama.init()
     while 1:                        #puts it in a loop
     #    prevText = text
-        text = irc.recv(2040).decode("utf-8", "replace")     #receive the text
+        text = irc.recv(2040).decode("utf_8", "strict")     #receive the text
         
         if text.find('PRIVMSG ') != -1:
             if text.find('PRIVMSG ' + shared_data.channel) != -1:
@@ -49,3 +49,4 @@ def listener(irc, botnick):
         else:
             ConsecutiveErrorCount = 0
             print(colorama.Fore.YELLOW + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + text.rsplit("\n", 1)[0])   #print text to console
+#

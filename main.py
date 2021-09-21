@@ -39,3 +39,4 @@ if __name__ == "__main__":
             #sleep(1)
             run_parallel(irc_listener)
             shared_data.ListenerRunning = 1
+#
